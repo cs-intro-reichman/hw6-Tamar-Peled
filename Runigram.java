@@ -37,6 +37,13 @@ public class Runigram {
 		System.out.println("scaling");
 		System.out.println();
 		print(scaled(tinypic, 3, 5));
+
+		System.out.println();
+		System.out.println("null");
+		System.out.println();
+		
+		
+		
 		
 		
 	}
@@ -202,7 +209,7 @@ public class Runigram {
 
 		
 		Color blend = new Color (r,g,b);
-		System.out.println("blending alp = " + alpha + "c1 = " + c1 + "c2 = " + c2 + "result "+ " " + r + " " + g + " " + b );
+		//System.out.println("blending alp = " + alpha + "c1 = " + c1 + "c2 = " + c2 + "result "+ " " + r + " " + g + " " + b );
 	
 
 		
@@ -251,7 +258,7 @@ public class Runigram {
 		setCanvas(source);
 
 		for (int i = 0; i <= n; i++){
-			double alpha = (double) (n-1) / n;
+			double alpha = (double) (n-i) / n;
 			Color [][] tempMorphImage = blend(source, target, alpha);
 			display(tempMorphImage);
 			StdDraw.pause(500);
