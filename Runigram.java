@@ -39,8 +39,12 @@ public class Runigram {
 		print(scaled(tinypic, 3, 5));
 
 		System.out.println();
-		System.out.println("null");
+		System.out.println("blend");
 		System.out.println();
+		///Color[][] thor = read("thor.ppm");
+		//Color[][] ironman = read("iromman.ppm");
+		//print(blend(thor, ironman, 20));
+		
 		
 		
 		
@@ -182,14 +186,17 @@ public class Runigram {
 
 		// Use decimal numbers (double) for more accurate calculation
 		double rowScale = (double) numRows/ height;
-		double numScale = (double) numCols / width;
+		double colsScale = (double) numCols / width;
 
 		// Calculate the exact position in the original image
 		for (int i = 0; i < height; i++){
 			for (int j = 0; j < width; j++){
 				int orgRow = (int) (i * rowScale);
-				int orgCol = (int) (j * numScale);
+				int orgCol = (int) (j * colsScale);
+				orgRow = Math.min(orgRow, numRows -1);
+				orgCol = Math.min(orgCol, numCols -1);
 				scaled[i][j] = image [orgRow][orgCol];
+				
 			}
 		}
 		return scaled;
@@ -203,13 +210,14 @@ public class Runigram {
 	 */
 	public static Color blend(Color c1, Color c2, double alpha) {
 		
+
 		int r  = (int) (alpha * c1.getRed() + (1 - alpha) * c2.getRed());
 		int g = (int) (alpha * c1.getGreen() + (1 - alpha) * c2.getGreen());
 		int b = (int) (alpha * c1.getBlue() + (1 - alpha) * c2.getBlue());
 
 		
 		Color blend = new Color (r,g,b);
-		//System.out.println("blending alp = " + alpha + "c1 = " + c1 + "c2 = " + c2 + "result "+ " " + r + " " + g + " " + b );
+		
 	
 
 		
@@ -223,18 +231,22 @@ public class Runigram {
 	 * The two images must have the same dimensions.
 	 */
 	public static Color[][] blend(Color[][] image1, Color[][] image2, double alpha) {
-		int numRows = image1.length;
-		int numCols = image1[0].length;
+		int height = image1.length;
+		int width = image1[0].length;
 
-		Color [][] blendImage = new Color[numRows][numCols];
+		Color [][] blendImage = new Color[height][width];
 		
-		for (int i = 0; i < numRows; i++){
-			for (int j = 0; j < numCols; j++){
+		for (int i = 0; i < height; i++){
+			for (int j = 0; j < width; j++){
 				 Color c1 = image1 [i][j];
 				 Color c2 = image2 [i][j];
 				 blendImage[i][j] = blend(c1, c2, alpha);
 				
+			
 			}
+		
+			
+			
 		}
 	
 		return blendImage;
@@ -247,18 +259,15 @@ public class Runigram {
 	 * of the source image.
 	 */
 	public static void morph(Color[][] source, Color[][] target, int n) {
-		int numRowsSource = source.length;
-		int numColsSorce = source[0].length;
-		int numRowsTarget = target.length;
-		int numColsTarget = target[0].length;
+		
 
-		if (numRowsSource != numRowsTarget || numColsSorce != numColsTarget){
-			target = scaled(target, numRowsSource, numColsSorce);
+		if (source.length != target.length || source[0].length != target[0].length){
+			target = scaled(target, source[0].length,source.length);
 		}
 		
-		Color[][] newImage = new Color[numRowsSource][numColsSorce];
-		for (int i = 0; i <= n; i++){
-			double alpha = (double) (n-i) / n;
+		Color[][] newImage = new Color[source.length][source[0].length];
+		for (int i = 0; i < n; i++){
+			double alpha = (n-i) / n;
 			newImage = blend(source, target, alpha);
 			display(newImage);
 			StdDraw.pause(500);
