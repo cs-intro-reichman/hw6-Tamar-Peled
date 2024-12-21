@@ -255,12 +255,12 @@ public class Runigram {
 		if (numRowsSource != numRowsTarget || numColsSorce != numColsTarget){
 			target = scaled(target, numRowsSource, numColsSorce);
 		}
-		setCanvas(source);
-
+		
+		Color[][] newImage = new Color[numRowsSource][numColsSorce];
 		for (int i = 0; i <= n; i++){
 			double alpha = (double) (n-i) / n;
-			Color [][] tempMorphImage = blend(source, target, alpha);
-			display(tempMorphImage);
+			newImage = blend(source, target, alpha);
+			display(newImage);
 			StdDraw.pause(500);
 		
 	}
